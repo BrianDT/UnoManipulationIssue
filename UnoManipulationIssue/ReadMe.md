@@ -1,7 +1,14 @@
-# Getting Started
+Reproduces the issue:
+Active manipulation of an element stops any other element like a button interacting, tapping the button also stops the manipulation.
 
-Welcome to the Uno Platform!
+Raised as issue #22460
 
-To discover how to get started with your new app: https://aka.platform.uno/get-started
+Description
+Android only
+Once manipulation of a visual element (the touch pad in the referenced example) has started, tapping a button on the same page will not generate any commands. When the button is tapped it halts the manipulation of the touch pad element.
+After the manipulation has ended the button will generate commands normally.
 
-For more information on how to use the Uno.Sdk or upgrade Uno Platform packages in your solution: https://aka.platform.uno/using-uno-sdk
+Only observed on Android, works on Windows other platforms not tested.
+
+Expected behaviour
+Should work the same as Windows, Manipulation of one element should not impact other controls on the same page.
