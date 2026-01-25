@@ -280,42 +280,52 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
             return;
         }
 
-        // Animate the sight
-        double deltaX = this.gestureDelaX;
-        double deltaY = this.gestureDelaY;
-        this.gestureDelaX = 0.0D;
-        this.gestureDelaY = 0.0D;
-        if (this.useGestureDeltas == GestureTrackingState.StopedPendingFinalUse)
+        try
         {
-            this.useGestureDeltas = GestureTrackingState.NotActive;
-        }
+            // Animate the sight
+            double deltaX = this.gestureDelaX;
+            double deltaY = this.gestureDelaY;
+            this.gestureDelaX = 0.0D;
+            this.gestureDelaY = 0.0D;
+            if (this.useGestureDeltas == GestureTrackingState.StopedPendingFinalUse)
+            {
+                this.useGestureDeltas = GestureTrackingState.NotActive;
+            }
 
-        double x = this.XPosition + deltaX;
-        double y = this.YPosition + deltaY;
+            double x = this.XPosition + deltaX;
+            double y = this.YPosition + deltaY;
+            var limitX = this.drawingAreaWidth - 40;
+            var limitY = this.drawingAreaHeight - 40;
 
-        if (x < 0)
-        {
-            x = 0;
-        }
-        else if (x > this.drawingAreaWidth)
-        {
-            x = this.drawingAreaWidth;
-        }
+            if (x < 0)
+            {
+                x = 0;
+            }
+            else if (x > limitX)
+            {
+                x = limitX;
+            }
 
-        if (y < 0)
-        {
-            y = 0;
-        }
-        else if (y > this.drawingAreaHeight)
-        {
-            y = this.drawingAreaHeight;
-        }
+            if (y < 0)
+            {
+                y = 0;
+            }
+            else if (y > limitY)
+            {
+                y = limitY;
+            }
 
-        this.XPosition = x;
-        this.YPosition = y;
+            System.Diagnostics.Debug.WriteLine($"Sprite X: {this.XPosition:0.0}, Y: {this.YPosition:0.0}");
+
+            this.XPosition = x;
+            this.YPosition = y;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+        }
 
 #if DEBUG
-        System.Diagnostics.Debug.WriteLine($"Sprite X: {this.XPosition:0.0}, Y: {this.YPosition:0.0}");
         ////this.loggingService.TraceToLog($"Sprite X: {this.XPosition:0.0}, Y: {this.YPosition:0.0}");
 #endif
     }
