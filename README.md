@@ -1,7 +1,8 @@
 Reproduces the issue:
 Active manipulation of an element stops any other element like a button interacting, tapping the button also stops the manipulation.
 
-Raised as issue #22460
+Raised as Uno Platform issue #22460
+https://github.com/unoplatform/uno/issues/22460
 
 Description
 Android only
