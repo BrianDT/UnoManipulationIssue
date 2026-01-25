@@ -33,13 +33,14 @@
                 
                 <!--Touch pad-->
                 <Ellipse x:Name="touchPad" Grid.Row="1" Grid.Column="0" Margin="64,64,32,32" Height="200" Width="200" Stroke="LimeGreen" StrokeThickness="2" Fill="Yellow"
-                    ManipulationStarted="Path_ManipulationStarted"
-                  ManipulationDelta="Path_ManipulationDelta"
-                  ManipulationCompleted="Path_ManipulationCompleted"/>
+                         ManipulationStarted="Path_ManipulationStarted"
+                         ManipulationDelta="Path_ManipulationDelta"
+                         ManipulationCompleted="Path_ManipulationCompleted"/>
 
                 <Grid Grid.Row="1" Grid.Column="1" SizeChanged="OnDrawingSurfaceSizeChanged" Background="Wheat">
                     <!--Moving sprite-->
-                    <SymbolIcon  Symbol="Send" HorizontalAlignment="Left" VerticalAlignment="Top" >
+                    <SymbolIcon Symbol="Send" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Foreground="DarkGreen">
                         <SymbolIcon.RenderTransform>
                             <TranslateTransform X="{x:Bind VM.XPosition, Mode=OneWay}"
                                                 Y="{x:Bind VM.YPosition, Mode=OneWay}" />

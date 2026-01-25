@@ -20,6 +20,8 @@ public sealed partial class MainPage : Page
         this.DataContext = new MainViewModel();
         this.VM?.PropertyChanged += this.OnViewModelPropertyChanged;
 
+        this.touchPad.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+
         this.Loaded += (s, e) =>
         {
             this.VM?.OnLoaded();
