@@ -40,12 +40,24 @@ public interface IMainViewModel : ISupportsTouchPad
     string? Response { get; }
 
     /// <summary>
+    /// Gets the window size state
+    /// </summary>
+    string? WindowSizeState { get; }
+
+    /// <summary>
     /// Called when the page and visual elements have been loaded
     /// </summary>
     public void OnLoaded();
 
     /// <summary>
-    /// Called when the page drawing surface size changes
+    /// Called when the page size changes
+    /// </summary>
+    /// <param name="width">The page width</param>
+    /// <param name="height">The page height</param>
+    void OnPageSizeChanged(double width, double height);
+
+    /// <summary>
+    /// Called when the drawing surface size changes
     /// </summary>
     /// <param name="width">The page width</param>
     /// <param name="height">The page height</param>

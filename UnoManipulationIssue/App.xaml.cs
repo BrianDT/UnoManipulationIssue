@@ -51,12 +51,13 @@ public partial class App : Application
 #endif
 
             // Exclude logs below this level
-            builder.SetMinimumLevel(LogLevel.Information);
+            builder.SetMinimumLevel(LogLevel.Trace);
 
             // Default filters for Uno Platform namespaces
             builder.AddFilter("Uno", LogLevel.Warning);
             builder.AddFilter("Windows", LogLevel.Warning);
             builder.AddFilter("Microsoft", LogLevel.Warning);
+            builder.AddFilter("VsslTrace", LogLevel.Trace);
 
             // Generic Xaml events
             // builder.AddFilter("Microsoft.UI.Xaml", LogLevel.Debug );

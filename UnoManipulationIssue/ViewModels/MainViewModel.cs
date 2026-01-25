@@ -71,19 +71,25 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
     /// Gets the X co-ordinate of the sprite
     /// </summary>
     [ObservableProperty]
-    public partial double XPosition { get; set; }
+    public partial double XPosition { get; private set; }
 
     /// <summary>
     /// Gets the Y co-ordinate of the sprite
     /// </summary>
     [ObservableProperty]
-    public partial double YPosition { get; set; }
+    public partial double YPosition { get; private set; }
 
     /// <summary>
     /// Gets the button hit response
     /// </summary>
     [ObservableProperty]
-    public partial string? Response { get; set; }
+    public partial string? Response { get; private set; }
+
+    /// <summary>
+    /// Gets the window size state
+    /// </summary>
+    [ObservableProperty]
+    public partial string? WindowSizeState { get; private set; }
 
     /// <summary>
     /// Called when the page and visual elements have been loaded
@@ -94,15 +100,40 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
         this.gameLoopCancellationTokenSource = new CancellationTokenSource();
         var token = this.gameLoopCancellationTokenSource.Token;
 
-        this.gameLoopTask = Task.Run(async () =>
-        {
-            await this.Draw();
-        },
-        token);
+        this.gameLoopTask = Task.Run(
+            async () =>
+            {
+                await this.Draw();
+            },
+            token);
     }
 
     /// <summary>
-    /// Called when the page drawing surface size changes
+    /// Called when the page size changes
+    /// </summary>
+    /// <param name="width">The page width</param>
+    /// <param name="height">The page height</param>
+    public void OnPageSizeChanged(double width, double height)
+    {
+        string? newState = null;
+        if (height > width)
+        {
+            newState = "Portrait";
+        }
+        else
+        {
+            newState = "Landscape";
+        }
+
+        if (this.WindowSizeState != newState)
+        {
+            this.WindowSizeState = newState;
+            this.OnVisualStateChanged(newState);
+        }
+    }
+
+    /// <summary>
+    /// Called when the drawing surface size changes
     /// </summary>
     /// <param name="width">The page width</param>
     /// <param name="height">The page height</param>
@@ -113,18 +144,17 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
 
         var newX = width / 2.0;
         var newY = height / 2.0;
-        if (this.XPosition == 0.0 || this.YPosition == 0.0)
+        if (newX != this.XPosition)
         {
-            if (newX != this.XPosition)
-            {
-                this.XPosition = newX;
-            }
-
-            if (newY != this.YPosition)
-            {
-                this.YPosition = newY;
-            }
+            this.XPosition = newX;
         }
+
+        if (newY != this.YPosition)
+        {
+            this.YPosition = newY;
+        }
+
+        System.Diagnostics.Debug.WriteLine($"Sprite X: {this.XPosition:0.0}, Y: {this.YPosition:0.0}, Drawing area width {width}, height {height}");
     }
 
     /// <summary>
@@ -167,6 +197,14 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
 
         this.gestureDelaX += deltaX * this.gestureTrackingFactor;
         this.gestureDelaY += deltaY * this.gestureTrackingFactor;
+    }
+
+    /// <summary>
+    /// Called when the visual state changes
+    /// </summary>
+    /// <param name="pageVisualState">The new state</param>
+    protected virtual void OnVisualStateChanged(string pageVisualState)
+    {
     }
 
     /// <summary>
