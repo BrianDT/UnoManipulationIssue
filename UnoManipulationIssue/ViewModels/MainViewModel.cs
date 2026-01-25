@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json.Linq;
+using Vssl.Samples.ViewModelInterfaces;
 
 /// <summary>
 /// The view model of the main page.
@@ -24,6 +25,8 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
     private double lastX;
 
     private double lastY;
+
+    private IDispatchOnUIThread uiDispatcher;
 
     /// <summary>
     /// The redraw frequency
@@ -62,8 +65,10 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
     /// </summary>
-    public MainViewModel()
+    /// <param name="uiDispatcher">A cross platform implementation of the UI Dispatcher facade</param>
+    public MainViewModel(IDispatchOnUIThread uiDispatcher)
     {
+        this.uiDispatcher = uiDispatcher;
         this.freq = 250;
     }
 
@@ -317,8 +322,12 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
 
             System.Diagnostics.Debug.WriteLine($"Sprite X: {this.XPosition:0.0}, Y: {this.YPosition:0.0}");
 
-            this.XPosition = x;
-            this.YPosition = y;
+            // This dispatching should be handled internally by CommunityToolkit.Mvvm generated code but without it a COM exception is thrown.
+            this.uiDispatcher.Invoke(() =>
+            {
+                this.XPosition = x;
+                this.YPosition = y;
+            });
         }
         catch (Exception ex)
         {

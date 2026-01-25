@@ -4,6 +4,8 @@ namespace UnoManipulationIssue;
 using System.ComponentModel;
 using Microsoft.UI.Xaml.Input;
 using UnoManipulationIssue.ViewModels;
+using Vssl.Samples.Services;
+using Vssl.Samples.ViewModelInterfaces;
 
 /// <summary>
 /// The main page.
@@ -17,7 +19,9 @@ public sealed partial class MainPage : Page
     {
         this.InitializeComponent();
 
-        this.DataContext = new MainViewModel();
+        IDispatchOnUIThread uiDispatcher = new UIDispatcher();
+        uiDispatcher.Initialise();
+        this.DataContext = new MainViewModel(uiDispatcher);
         this.VM?.PropertyChanged += this.OnViewModelPropertyChanged;
 
         this.touchPad.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
