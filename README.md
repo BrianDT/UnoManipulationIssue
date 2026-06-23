@@ -15,3 +15,4 @@ Expected behaviour
 Should work the same as Windows, Manipulation of one element should not impact other controls on the same page.
 
 9/6/2026 - Confirmed still an issue on Uno 6.5.31
+23/6/2026 - Updated to Uno 6.5.36
